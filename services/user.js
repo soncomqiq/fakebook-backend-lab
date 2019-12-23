@@ -13,26 +13,17 @@ module.exports = (app, db) => {
         console.error(info.message);
         res.status(403).send(info.message);
       } else {
-        const data = {
-          first_name: req.body.first_name,
-          last_name: req.body.last_name,
-          email: req.body.email,
-          username: user.username,
-          role: "user"
-        };
-        console.log(data);
         db.user.findOne({
           where: {
-            username: data.username,
+            username: req.body.username,
           },
         }).then(user => {
           console.log(user);
           user
             .update({
-              first_name: data.first_name,
-              last_name: data.last_name,
-              email: data.email,
-              role: data.role
+              profile_img_url: req.body.profile_img_url,
+              name: req.body.name,
+              role: "user"
             })
             .then(() => {
               console.log('user created in db');
